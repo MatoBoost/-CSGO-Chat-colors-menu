@@ -8,6 +8,7 @@
 #define PLUGIN_VERSION "2.0"
 
 Handle gH_Cookie = INVALID_HANDLE;
+char prefix[30] = "[\x02Relax\x01Gaming]"; //Use your own prefix here
 
 public Plugin:myinfo = 
 {
@@ -69,12 +70,12 @@ public int MenuHandler_Colors(Handle hMenu, MenuAction maAction, int client, int
 
 		if(StrEqual(sChoice, "\x03"))
 		{
-			PrintToChat(client, "[\x02Relax\x01Gaming] Your chat color will match your \x03team color.");
+			PrintToChat(client, "%s Your chat color will match your team color.", prefix);
 		}
 
 		else
 		{
-			PrintToChat(client, "[\x02Relax\x01Gaming] You have selected %sthis color\x01.", sChoice);
+			PrintToChat(client, "%s You have selected %sthis color\x01.", prefix, sChoice);
 		}
 		
 		ChatProcessor_SetChatColor(client, sChoice);
