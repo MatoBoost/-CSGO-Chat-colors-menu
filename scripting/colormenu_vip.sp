@@ -5,9 +5,10 @@
 
 #pragma semicolon 1
 
-#define PLUGIN_VERSION "2.0"
+#define PLUGIN_VERSION "2.2"
 
 Handle gH_Cookie = INVALID_HANDLE;
+char sChoice[8] = "\x01";
 char prefix[30] = "[\x02Relax\x01Gaming]"; //Use your own prefix here
 
 public Plugin:myinfo = 
@@ -25,7 +26,12 @@ public void OnPluginStart()
 
 	CreateConVar("sm_csgochatcolors_version", PLUGIN_VERSION, "Plugin version", FCVAR_DONTRECORD|FCVAR_NOTIFY);
 
-	RegAdminCmd("sm_colors", Command_Colors, ADMFLAG_GENERIC, "Pops up the colors menu");
+	RegAdminCmd("sm_colors", Command_Colors, ADMFLAG_RESERVATION, "Pops up the colors menu");
+}
+
+public void OnClientConnected(int client)
+{
+	ChatProcessor_SetChatColor(client, sChoice);
 }
 
 public Action Command_Colors(int client, int args)
@@ -58,7 +64,6 @@ public int MenuHandler_Colors(Handle hMenu, MenuAction maAction, int client, int
 {
 	if(maAction == MenuAction_Select)
 	{
-		char sChoice[8];
 		GetMenuItem(hMenu, choice, sChoice, 8);
 
 		SetClientCookie(client, gH_Cookie, sChoice);
@@ -70,7 +75,7 @@ public int MenuHandler_Colors(Handle hMenu, MenuAction maAction, int client, int
 
 		if(StrEqual(sChoice, "\x03"))
 		{
-			PrintToChat(client, "%s Your chat color will match your team color.", prefix);
+			PrintToChat(client, "%s Your chat color will match your \x03team color.", prefix);
 		}
 
 		else
